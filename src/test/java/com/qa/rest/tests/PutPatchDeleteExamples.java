@@ -34,7 +34,7 @@ public class PutPatchDeleteExamples {
 		then().
 		statusCode(200).log().all();
 	
-	
+	System.out.println("done");
 	}
 	@Test
 	public void testPatch() {
