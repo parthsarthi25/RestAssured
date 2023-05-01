@@ -1,11 +1,14 @@
 package com.qa.rest.tests;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import org.hamcrest.Matchers;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.testng.annotations.Test;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.testng.annotations.Test;
+
 
 import io.restassured.RestAssured;
 import io.restassured.module.jsv.JsonSchemaValidator;
@@ -123,7 +126,7 @@ public class PracticeNstuff {
 			}
 			JSONObject jobj = new JSONObject();
 			
-		JSONArray jsonarray = (JSONArray)jobj.get(.Name");
+		JSONArray jsonarray = (JSONArray)jobj.get("Name");
 		
 		Iterator iterator = jsonarray.iterator();
 		
@@ -282,24 +285,40 @@ public class PracticeNstuff {
 				
 				
 				}
-		@Test(enabled=true)
-		@JsonProperty("wrapper")
-		public void Vehicles3() throws ParseException {		
+		@Test
+		public void Vehicles3() {		
 			
-		getreq gr = given().expect().defaultParser(Parser.JSON).when().get("https://vpic.nhtsa.dot.gov/api/vehicles/getallmanufacturers?format=json").as(getreq.class);
-	//Response res = given().expect().when().get("https://vpic.nhtsa.dot.gov/api/vehicles/getallmanufacturers?format=json");
-
+		//getreq gc = given().expect().defaultParser(Parser.JSON).when().get("https://vpic.nhtsa.dot.gov/api/vehicles/getallmanufacturers?format=json").getBody().as(getreq.class);
+		String res = given().when().get("https://vpic.nhtsa.dot.gov/api/vehicles/getallmanufacturers?format=json").asString();
+		//String respbody = res.getBody().asString();
+		//JsonPath js = res.jsonPath();
 		//ObjectMapper objectMapper = new ObjectMapper();
-		//objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false) ;
 	    //JsonPath jsonevaluator = res.jsonPath();
 	    //List<HashMap<String,String>> jsonresproot = jsonevaluator.getList("$");
 	    //List<Results> servresplist = new ArrayList<Results>();
-	    
-		System.out.println(gr.toString());
-	    
 		//System.out.println(gr.getResults().size());
+
+		
+		
+		/*JSONParser jsonParser = new JSONParser();
+		JSONObject jsonObj = (JSONObject) jsonParser.parse(respbody);
+		JSONArray jsonArray = (JSONArray) jsonObj.get("Results");
+		
+		System.out.println(jsonArray.get(0));
+		
+		HashMap<String, Integer> jsonpa = new HashMap<String, Integer>();*/
+		
+		JSONObject jsonobj = new JSONObject(res);
+		JSONArray jsonarr = jsonobj.getJSONArray("Results");
+		JSONObject jsonobj1 = jsonarr.getJSONObject(0);
+		
+		System.out.println(jsonobj1.getString("Mfr_Name"));
+		
 		
 		}
+		
+		
+		
 		@Test(enabled=false)
 		public void JsonObjCompare() throws JsonMappingException, JsonProcessingException {
 			
@@ -326,7 +345,7 @@ public class PracticeNstuff {
 			ObjectMapper mapper = new ObjectMapper();
 			
 			//way 1
-			assertEquals(mapper.readTree(s1), mapper.readTree(s2));
+			AssertJUnit.assertEquals(mapper.readTree(s1), mapper.readTree(s2));
 			//way 2
 			JsonNode jsonNode1 = mapper.readTree(s1);
 			JsonNode jsonNode2 = mapper.readTree(s2);
@@ -352,8 +371,7 @@ public class PracticeNstuff {
 		BufferedReader bufferedReader;
 		public static class JsonDataManager {
 	
-		@SuppressWarnings("unchecked")
-		public static Map<String, String> jsonParser(String key, int i) throws IOException, ParseException {
+		/*public static Map<String, String> jsonParser(String key, int i) throws IOException, ParseException {
 			
 
 			JSONParser jsonParser = new JSONParser();
@@ -365,7 +383,7 @@ public class PracticeNstuff {
 			JSONArray jsonArray = (JSONArray) jsonObj.get(key);
 
 			return (JSONObject) jsonArray.get(i);
-		}
+		}*/
 
 		}
 		
@@ -380,9 +398,9 @@ public class PracticeNstuff {
 			System.out.println(JsonDataManager.jsonParser("users", 4).get("emailAddress"));
 			System.out.println(JsonDataManager.jsonParser("users", 5).get("emailAddress"));*/
 			
-			System.out.println(JsonDataManager.jsonParser("addresses", 0).get("nickName"));
-			System.out.println(JsonDataManager.jsonParser("addresses", 1).get("nickName"));
-			System.out.println(JsonDataManager.jsonParser("addresses", 2).get("nickName"));
+			//System.out.println(JsonDataManager.jsonParser("addresses", 0).get("nickName"));
+			//System.out.println(JsonDataManager.jsonParser("addresses", 1).get("nickName"));
+			//System.out.println(JsonDataManager.jsonParser("addresses", 2).get("nickName"));
 			
 
 	        //System.out.println(jsonResponse.size());
